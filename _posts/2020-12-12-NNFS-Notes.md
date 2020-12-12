@@ -1,3 +1,11 @@
+---
+toc: true
+layout: post
+description: Notes from NNFS
+categories: [Studying]
+title: Notes From NNFS
+---
+
 Wanting to relearn the ML basics from my university degree I started going through the course [Neural Networks From Scratch](https://nnfs.io/).
 
 This post contains my notes and learnings from the course.
