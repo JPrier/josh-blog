@@ -11,13 +11,13 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="A Deep Dive into the automatically saved csvs from Kovaaks Aim Trainer" />
 <meta property="og:description" content="A Deep Dive into the automatically saved csvs from Kovaaks Aim Trainer" />
-<link rel="canonical" href="https://jprier.github.io/josh-blog/kovaaks/understanding%20the%20data/data%20science/2020/12/14/KovaaksData.html" />
-<meta property="og:url" content="https://jprier.github.io/josh-blog/kovaaks/understanding%20the%20data/data%20science/2020/12/14/KovaaksData.html" />
+<link rel="canonical" href="https://jprier.github.io/josh-blog/kovaaks/understanding%20the%20data/data%20science/2020/12/15/KovaaksData.html" />
+<meta property="og:url" content="https://jprier.github.io/josh-blog/kovaaks/understanding%20the%20data/data%20science/2020/12/15/KovaaksData.html" />
 <meta property="og:site_name" content="Joshs Blog" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2020-12-14T00:00:00-06:00" />
+<meta property="article:published_time" content="2020-12-15T00:00:00-06:00" />
 <script type="application/ld+json">
-{"description":"A Deep Dive into the automatically saved csvs from Kovaaks Aim Trainer","url":"https://jprier.github.io/josh-blog/kovaaks/understanding%20the%20data/data%20science/2020/12/14/KovaaksData.html","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://jprier.github.io/josh-blog/kovaaks/understanding%20the%20data/data%20science/2020/12/14/KovaaksData.html"},"headline":"Understanding The Data – Kovaaks Aim Trainer","dateModified":"2020-12-14T00:00:00-06:00","datePublished":"2020-12-14T00:00:00-06:00","author":{"@type":"Person","name":"Josh Prier"},"@context":"https://schema.org"}</script>
+{"description":"A Deep Dive into the automatically saved csvs from Kovaaks Aim Trainer","url":"https://jprier.github.io/josh-blog/kovaaks/understanding%20the%20data/data%20science/2020/12/15/KovaaksData.html","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://jprier.github.io/josh-blog/kovaaks/understanding%20the%20data/data%20science/2020/12/15/KovaaksData.html"},"headline":"Understanding The Data – Kovaaks Aim Trainer","dateModified":"2020-12-15T00:00:00-06:00","datePublished":"2020-12-15T00:00:00-06:00","author":{"@type":"Person","name":"Josh Prier"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/josh-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://jprier.github.io/josh-blog/feed.xml" title="Joshs Blog" /><link rel="shortcut icon" type="image/x-icon" href="/josh-blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
@@ -72,15 +72,15 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Understanding The Data -- Kovaaks Aim Trainer</h1><p class="page-description">A Deep Dive into the automatically saved csvs from Kovaaks Aim Trainer</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-12-14T00:00:00-06:00" itemprop="datePublished">
-        Dec 14, 2020
+    <h1 class="post-title p-name" itemprop="name headline">Understanding The Data -- Kovaaks Aim Trainer</h1><p class="page-description">A Deep Dive into the automatically saved csvs from Kovaaks Aim Trainer</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-12-15T00:00:00-06:00" itemprop="datePublished">
+        Dec 15, 2020
       </time>• 
           <span itemprop="author" itemscope itemtype="http://schema.org/Person">
             <span class="p-author h-card" itemprop="name">Josh Prier</span></span>
        • <span class="read-time" title="Estimated read time">
     
     
-      1 min read
+      2 min read
     
 </span></p>
 
@@ -175,6 +175,14 @@ The format of the csv's names is as follows</p>
 <h1 id="The-Data">
 <a class="anchor" href="#The-Data" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Data<a class="anchor-link" href="#The-Data"> </a>
 </h1>
+<p>Each file has 4 parts:</p>
+<ul>
+<li>List of all Kills</li>
+<li>Weapon, shots, hits, damage done, damage possible</li>
+<li>Overall Stats and info </li>
+<li>Info about settings (input lag, fps, sens, FOV, etc)</li>
+</ul>
+
 </div>
 </div>
 </div>
@@ -189,6 +197,41 @@ The format of the csv's names is as follows</p>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">urlopen</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Each part of the data has different formats and headers.
+Here are the Headers/keys in python</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description" open="">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">keys_kills</span><span class="o">=</span><span class="p">[</span><span class="s2">"Kill #"</span><span class="p">,</span><span class="s2">"Timestamp"</span><span class="p">,</span><span class="s2">"Bot"</span><span class="p">,</span><span class="s2">"Weapon"</span><span class="p">,</span><span class="s2">"TTK"</span><span class="p">,</span><span class="s2">"Shots"</span><span class="p">,</span><span class="s2">"Hits"</span><span class="p">,</span><span class="s2">"Accuracy"</span><span class="p">,</span><span class="s2">"Damage Done"</span><span class="p">,</span><span class="s2">"Damage Possible"</span><span class="p">,</span><span class="s2">"Efficiency"</span><span class="p">,</span><span class="s2">"Cheated"</span><span class="p">]</span>
+<span class="n">keys_weapon</span><span class="o">=</span><span class="p">[</span><span class="s2">"Weapon"</span><span class="p">,</span><span class="s2">"Shots"</span><span class="p">,</span><span class="s2">"Hits"</span><span class="p">,</span><span class="s2">"Damage Done"</span><span class="p">,</span><span class="s2">"Damage Possible"</span><span class="p">]</span>
+<span class="n">keys_info</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">keys_settings</span><span class="o">=</span><span class="p">[]</span>
 </pre></div>
 
     </div>
@@ -209,11 +252,37 @@ The format of the csv's names is as follows</p>
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">example_stat_data</span> <span class="o">=</span> <span class="s2">"https://JPrier.github.io/stats/Tile</span><span class="si">%20F</span><span class="s2">renzy%20-%20Challenge%20-%202020.12.14-08.46.00%20Stats.csv"</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Current online directory for my stats </span>
+<span class="n">stat_dir</span> <span class="o">=</span> <span class="s2">"https://jprier.github.io/stats/"</span>
+<span class="n">stat_filenames_url</span> <span class="o">=</span> <span class="s2">"https://jprier.github.io/stats/filenames.txt"</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">example_stat_data</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">"Kill #"</span><span class="p">,</span><span class="s2">"Timestamp"</span><span class="p">,</span><span class="s2">"Bot"</span><span class="p">,</span><span class="s2">"Weapon"</span><span class="p">,</span><span class="s2">"TTK"</span><span class="p">,</span><span class="s2">"Shots"</span><span class="p">,</span><span class="s2">"Hits"</span><span class="p">,</span><span class="s2">"Accuracy"</span><span class="p">,</span><span class="s2">"Damage Done"</span><span class="p">,</span><span class="s2">"Damage Possible"</span><span class="p">,</span><span class="s2">"Efficiency"</span><span class="p">,</span><span class="s2">"Cheated"</span><span class="p">])</span>
-<span class="k">with</span> <span class="n">pd</span><span class="o">.</span><span class="n">option_context</span><span class="p">(</span><span class="s1">'display.max_rows'</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'display.max_columns'</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>  <span class="c1"># more options can be specified also</span>
-    <span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">stat_filenames</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">stat_filenames_url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'utf-8'</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+
+<span class="n">kills</span> <span class="o">=</span> <span class="s2">""</span>
+<span class="n">weapon</span> <span class="o">=</span> <span class="s2">""</span>
+<span class="n">info</span> <span class="o">=</span> <span class="s2">""</span>
+
+<span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">stat_filenames</span><span class="p">:</span>
+    <span class="c1"># TODO: parse filename for challenge name and date</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">' '</span><span class="p">,</span> <span class="s1">'%20'</span><span class="p">)</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">stat_dir</span> <span class="o">+</span> <span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'utf-8'</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">'</span><span class="p">)</span>
+
+        <span class="c1"># TODO: Add challenge name and date to each as columns </span>
+        <span class="k">if</span> <span class="n">kills</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
+            <span class="n">kills</span> <span class="o">=</span> <span class="n">file</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">file</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">file</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="n">kills</span> <span class="o">=</span> <span class="n">kills</span> <span class="o">+</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span> <span class="o">+</span> <span class="n">file</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># file[1] --&gt; df_weapon</span>
+        <span class="c1"># file[2,3] --&gt; df_info</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+    
+<span class="n">df_kills</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">StringIO</span><span class="p">(</span><span class="n">kills</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s2">","</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">pd</span><span class="o">.</span><span class="n">option_context</span><span class="p">(</span><span class="s1">'display.max_rows'</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'display.max_columns'</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">df_kills</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -223,6 +292,14 @@ The format of the csv's names is as follows</p>
     </details>
 <div class="output_wrapper">
 <div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>HTTP Error 403: Forbidden
+</pre>
+</div>
+</div>
 
 <div class="output_area">
 
@@ -263,78 +340,78 @@ The format of the csv's names is as follows</p>
   <tbody>
     <tr>
       <th>0</th>
-      <td>Kill #</td>
-      <td>Timestamp</td>
-      <td>Bot</td>
-      <td>Weapon</td>
-      <td>TTK</td>
-      <td>Shots</td>
-      <td>Hits</td>
-      <td>Accuracy</td>
-      <td>Damage Done</td>
-      <td>Damage Possible</td>
-      <td>Efficiency</td>
-      <td>Cheated</td>
+      <td>1</td>
+      <td>14:19:43.846</td>
+      <td>target</td>
+      <td>pistol</td>
+      <td>0s</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>100.0</td>
+      <td>400.0</td>
+      <td>0.250</td>
+      <td>False</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>1</td>
-      <td>08:45:30.858</td>
+      <td>2</td>
+      <td>14:19:45.497</td>
       <td>target</td>
       <td>pistol</td>
-      <td>0s</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>25</td>
-      <td>50</td>
+      <td>0.307s</td>
+      <td>2.0</td>
+      <td>1.0</td>
       <td>0.5</td>
-      <td>false</td>
+      <td>100.0</td>
+      <td>800.0</td>
+      <td>0.125</td>
+      <td>False</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>2</td>
-      <td>08:45:31.212</td>
+      <td>3</td>
+      <td>14:19:46.148</td>
       <td>target</td>
       <td>pistol</td>
       <td>0s</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>25</td>
-      <td>50</td>
-      <td>0.5</td>
-      <td>false</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>100.0</td>
+      <td>400.0</td>
+      <td>0.250</td>
+      <td>False</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>3</td>
-      <td>08:45:31.575</td>
+      <td>4</td>
+      <td>14:19:46.784</td>
       <td>target</td>
       <td>pistol</td>
       <td>0s</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>25</td>
-      <td>50</td>
-      <td>0.5</td>
-      <td>false</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>100.0</td>
+      <td>400.0</td>
+      <td>0.250</td>
+      <td>False</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>4</td>
-      <td>08:45:31.931</td>
+      <td>5</td>
+      <td>14:19:47.384</td>
       <td>target</td>
       <td>pistol</td>
       <td>0s</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>25</td>
-      <td>50</td>
-      <td>0.5</td>
-      <td>false</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>100.0</td>
+      <td>400.0</td>
+      <td>0.250</td>
+      <td>False</td>
     </tr>
     <tr>
       <th>...</th>
@@ -352,83 +429,83 @@ The format of the csv's names is as follows</p>
       <td>...</td>
     </tr>
     <tr>
-      <th>123</th>
-      <td>Crosshair Scale:</td>
+      <th>16781</th>
+      <td>87</td>
+      <td>16:47:47.289</td>
+      <td>Shinji small Bot</td>
+      <td>pistol</td>
+      <td>0s</td>
       <td>1.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>2000.0</td>
+      <td>2000.0</td>
+      <td>1.000</td>
+      <td>False</td>
     </tr>
     <tr>
-      <th>124</th>
-      <td>Crosshair Color:</td>
-      <td>FFFF00</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <th>16782</th>
+      <td>88</td>
+      <td>16:47:47.834</td>
+      <td>Shinji Bot</td>
+      <td>pistol</td>
+      <td>0s</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>2000.0</td>
+      <td>2000.0</td>
+      <td>1.000</td>
+      <td>False</td>
     </tr>
     <tr>
-      <th>125</th>
-      <td>Resolution</td>
-      <td>2560x1080</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <th>16783</th>
+      <td>89</td>
+      <td>16:47:48.056</td>
+      <td>Shinji Bot</td>
+      <td>pistol</td>
+      <td>0s</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>2000.0</td>
+      <td>2000.0</td>
+      <td>1.000</td>
+      <td>False</td>
     </tr>
     <tr>
-      <th>126</th>
-      <td>Avg FPS</td>
-      <td>299.709625</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <th>16784</th>
+      <td>90</td>
+      <td>16:47:48.635</td>
+      <td>Shinji Bot</td>
+      <td>pistol</td>
+      <td>0s</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>2000.0</td>
+      <td>2000.0</td>
+      <td>1.000</td>
+      <td>False</td>
     </tr>
     <tr>
-      <th>127</th>
-      <td>Resolution Scale</td>
-      <td>100.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <th>16785</th>
+      <td>91</td>
+      <td>16:47:49.203</td>
+      <td>Shinji Bot</td>
+      <td>pistol</td>
+      <td>0s</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>2000.0</td>
+      <td>2000.0</td>
+      <td>1.000</td>
+      <td>False</td>
     </tr>
   </tbody>
 </table>
-<p>128 rows × 12 columns</p>
+<p>16786 rows × 12 columns</p>
 </div>
 </div>
 
@@ -452,7 +529,7 @@ The format of the csv's names is as follows</p>
         theme="github-light"
         crossorigin="anonymous"
         async>
-</script><a class="u-url" href="/josh-blog/kovaaks/understanding%20the%20data/data%20science/2020/12/14/KovaaksData.html" hidden></a>
+</script><a class="u-url" href="/josh-blog/kovaaks/understanding%20the%20data/data%20science/2020/12/15/KovaaksData.html" hidden></a>
 </article>
       </div>
     </main><footer class="site-footer h-card">
