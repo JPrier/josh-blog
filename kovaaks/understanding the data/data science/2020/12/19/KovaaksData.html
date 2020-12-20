@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Understanding The Data – Kovaaks Aim Trainer | Joshs Blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Understanding The Data – Kovaaks Aim Trainer" />
+<meta name="author" content="Josh Prier" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A Deep Dive into the automatically saved csvs from Kovaaks Aim Trainer" />
+<meta property="og:description" content="A Deep Dive into the automatically saved csvs from Kovaaks Aim Trainer" />
+<link rel="canonical" href="https://jprier.github.io/josh-blog/kovaaks/understanding%20the%20data/data%20science/2020/12/19/KovaaksData.html" />
+<meta property="og:url" content="https://jprier.github.io/josh-blog/kovaaks/understanding%20the%20data/data%20science/2020/12/19/KovaaksData.html" />
+<meta property="og:site_name" content="Joshs Blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-12-19T00:00:00-06:00" />
+<script type="application/ld+json">
+{"description":"A Deep Dive into the automatically saved csvs from Kovaaks Aim Trainer","url":"https://jprier.github.io/josh-blog/kovaaks/understanding%20the%20data/data%20science/2020/12/19/KovaaksData.html","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://jprier.github.io/josh-blog/kovaaks/understanding%20the%20data/data%20science/2020/12/19/KovaaksData.html"},"headline":"Understanding The Data – Kovaaks Aim Trainer","dateModified":"2020-12-19T00:00:00-06:00","datePublished":"2020-12-19T00:00:00-06:00","author":{"@type":"Person","name":"Josh Prier"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/josh-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://jprier.github.io/josh-blog/feed.xml" title="Joshs Blog" /><link rel="shortcut icon" type="image/x-icon" href="/josh-blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/josh-blog/">Joshs Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/josh-blog/about/">About Me</a><a class="page-link" href="/josh-blog/search/">Search</a><a class="page-link" href="/josh-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Understanding The Data -- Kovaaks Aim Trainer</h1><p class="page-description">A Deep Dive into the automatically saved csvs from Kovaaks Aim Trainer</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-12-19T00:00:00-06:00" itemprop="datePublished">
+        Dec 19, 2020
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Josh Prier</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      6 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/josh-blog/categories/#Kovaaks">Kovaaks</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/josh-blog/categories/#Understanding The Data">Understanding The Data</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/josh-blog/categories/#Data Science">Data Science</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/JPrier/josh-blog/tree/master/_notebooks/KovaaksData.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/josh-blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/JPrier/josh-blog/master?filepath=_notebooks%2FKovaaksData.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/josh-blog/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/JPrier/josh-blog/blob/master/_notebooks/KovaaksData.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/josh-blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#Kovaaks">Kovaaks </a></li>
+<li class="toc-entry toc-h1"><a href="#File-Names">File Names </a></li>
+<li class="toc-entry toc-h1"><a href="#The-Data">The Data </a></li>
+<li class="toc-entry toc-h1"><a href="#Visualizing-the-Data">Visualizing the Data </a></li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/KovaaksData.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Kovaaks">
+<a class="anchor" href="#Kovaaks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Kovaaks<a class="anchor-link" href="#Kovaaks"> </a>
+</h1>
+<p>Kovaaks is a "game" that allows to directly practice mouse control in 3d fps games. There are hundreds of different mini-games to practice with, each having a different focus.</p>
+<p>This <a href="https://www.dropbox.com/s/vaba3potfhf9jy1/KovaaK%20aim%20workout%20routines.pdf?dl=0">guide</a> is best for getting perspective or understanding how and why to use Kovaaks</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="File-Names">
+<a class="anchor" href="#File-Names" aria-hidden="true"><span class="octicon octicon-link"></span></a>File Names<a class="anchor-link" href="#File-Names"> </a>
+</h1>
+<p>Kovaaks has a great feature in which it saves every mini-game's stats to a csv. 
+The format of the csv's names is as follows</p>
+
+<pre><code>&lt;scenario name&gt; - &lt;Challenge or Freeplay&gt; - YYYY.MM.DD-HH.MM.SS Stats.csv</code></pre>
+<p>Example:</p>
+
+<pre><code>Tile Frenzy - Challenge - 2020.12.14-08.46.00 Stats.csv</code></pre>
+<p>Some of the scenario names also have dashes so just checking against the first dash will not work</p>
+
+<pre><code>Tile Frenzy - Strafing - 03 - Challenge - 2020.12.14-08.34.31 Stats.csv</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="The-Data">
+<a class="anchor" href="#The-Data" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Data<a class="anchor-link" href="#The-Data"> </a>
+</h1>
+<p>Each file has 4 parts:</p>
+<ul>
+<li>List of all Kills</li>
+<li>Weapon, shots, hits, damage done, damage possible</li>
+<li>Overall Stats and info </li>
+<li>Info about settings (input lag, fps, sens, FOV, etc)</li>
+</ul>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">urlopen</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Each part of the data has different formats and headers.
+Here are the Headers/keys in python</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description" open="">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">keys_kills</span><span class="o">=</span><span class="p">[</span><span class="s2">"Date"</span><span class="p">,</span><span class="s2">"Kill #"</span><span class="p">,</span><span class="s2">"Timestamp"</span><span class="p">,</span><span class="s2">"Bot"</span><span class="p">,</span><span class="s2">"Weapon"</span><span class="p">,</span><span class="s2">"TTK"</span><span class="p">,</span><span class="s2">"Shots"</span><span class="p">,</span><span class="s2">"Hits"</span><span class="p">,</span><span class="s2">"Accuracy"</span><span class="p">,</span><span class="s2">"Damage Done"</span><span class="p">,</span><span class="s2">"Damage Possible"</span><span class="p">,</span><span class="s2">"Efficiency"</span><span class="p">,</span><span class="s2">"Cheated"</span><span class="p">]</span>
+<span class="n">keys_weapon</span><span class="o">=</span><span class="p">[</span><span class="s2">"Date"</span><span class="p">,</span><span class="s2">"Weapon"</span><span class="p">,</span><span class="s2">"Shots"</span><span class="p">,</span><span class="s2">"Hits"</span><span class="p">,</span><span class="s2">"Damage Done"</span><span class="p">,</span><span class="s2">"Damage Possible"</span><span class="p">]</span>
+<span class="n">keys_info</span><span class="o">=</span><span class="p">[</span><span class="s2">"Date"</span><span class="p">,</span><span class="s2">"Kills"</span><span class="p">,</span><span class="s2">"Deaths"</span><span class="p">,</span><span class="s2">"Fight Time"</span><span class="p">,</span><span class="s2">"Avg TTK"</span><span class="p">,</span><span class="s2">"Damage Done"</span><span class="p">,</span><span class="s2">"Damage Taken"</span><span class="p">,</span><span class="s2">"Midairs"</span><span class="p">,</span><span class="s2">"Midaired"</span><span class="p">,</span><span class="s2">"Directs"</span><span class="p">,</span><span class="s2">"Directed"</span><span class="p">,</span><span class="s2">"Distance Traveled"</span><span class="p">,</span><span class="s2">"Score"</span><span class="p">,</span><span class="s2">"Scenario"</span><span class="p">,</span><span class="s2">"Hash"</span><span class="p">,</span><span class="s2">"Game Version"</span><span class="p">,</span><span class="s2">"Challenge Start"</span><span class="p">,</span><span class="s2">"Input Lag"</span><span class="p">,</span><span class="s2">"Max FPS (config)"</span><span class="p">,</span><span class="s2">"Sens Scale"</span><span class="p">,</span><span class="s2">"Horiz Sens"</span><span class="p">,</span><span class="s2">"Vert Sens"</span><span class="p">,</span><span class="s2">"FOV"</span><span class="p">,</span><span class="s2">"Hide Gun"</span><span class="p">,</span><span class="s2">"Crosshair"</span><span class="p">,</span><span class="s2">"Crosshair Scale"</span><span class="p">,</span><span class="s2">"Crosshair Color"</span><span class="p">,</span><span class="s2">"Resolution"</span><span class="p">,</span><span class="s2">"Avg FPS"</span><span class="p">,</span><span class="s2">"Resolution Scale"</span><span class="p">]</span>
+<span class="n">keys_info_no_colon</span><span class="o">=</span><span class="p">[</span><span class="s2">"Resolution"</span><span class="p">,</span><span class="s2">"Avg FPS"</span><span class="p">,</span><span class="s2">"Resolution Scale"</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#HELPERS</span>
+
+<span class="k">def</span> <span class="nf">split_format_file</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">date</span><span class="p">):</span>
+    <span class="n">split_section</span> <span class="o">=</span> <span class="n">section</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+<span class="c1">#     if output == "":</span>
+<span class="c1">#         output = split_section[0]</span>
+    <span class="c1"># TODO: Add date to each line</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">split_section</span><span class="p">[</span><span class="mi">1</span><span class="p">:])):</span>
+        <span class="k">if</span> <span class="n">split_section</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">','</span><span class="p">:</span>
+            <span class="n">split_section</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">split_section</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">split_section</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">date</span> <span class="o">+</span> <span class="s2">","</span> <span class="o">+</span> <span class="n">split_section</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">section</span> <span class="o">=</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">split_section</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">output</span> <span class="o">+</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span> <span class="o">+</span> <span class="n">section</span>
+    <span class="k">return</span> <span class="n">output</span>
+
+
+<span class="k">def</span> <span class="nf">format_info</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">date</span><span class="p">):</span>
+    <span class="n">info_lines</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys_info</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"Date"</span><span class="p">:</span>
+            <span class="n">found_key</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">found_key</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">info_lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">key</span> <span class="ow">in</span> <span class="n">line</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys_info_no_colon</span><span class="p">):</span>
+                <span class="n">split_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">','</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">split_line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">key</span><span class="p">:</span>
+                        <span class="n">found_key</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">split_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">':'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">split_line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">key</span><span class="p">:</span>
+                        <span class="n">found_key</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">found_key</span><span class="p">:</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">output</span> <span class="o">+</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span> <span class="o">+</span> <span class="s1">','</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">output</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description" open="">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Current online directory for my stats </span>
+<span class="n">stat_dir</span> <span class="o">=</span> <span class="s2">"https://jprier.github.io/stats/"</span>
+<span class="n">stat_filenames_url</span> <span class="o">=</span> <span class="s2">"https://jprier.github.io/stats/filenames.txt"</span>
+
+<span class="n">stat_filenames</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">stat_filenames_url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'utf-8'</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+
+<span class="n">kills</span> <span class="o">=</span> <span class="s1">','</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">keys_kills</span><span class="p">)</span>
+<span class="n">weapon</span> <span class="o">=</span> <span class="s1">','</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">keys_weapon</span><span class="p">)</span>
+<span class="n">info</span> <span class="o">=</span> <span class="s1">','</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">keys_info</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">stat_filenames</span><span class="p">:</span>
+    <span class="c1"># TODO: parse filename for challenge name and date</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">' '</span><span class="p">,</span> <span class="s1">'%20'</span><span class="p">)</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">stat_dir</span> <span class="o">+</span> <span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'utf-8'</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'%20'</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+            <span class="c1"># TODO: Add challenge name and date to each as columns</span>
+            <span class="n">kills</span> <span class="o">=</span> <span class="n">split_format_file</span><span class="p">(</span><span class="n">file</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">kills</span><span class="p">,</span> <span class="n">date</span><span class="p">)</span>
+
+            <span class="c1"># file[1] --&gt; df_weapon</span>
+            <span class="n">weapon</span> <span class="o">=</span> <span class="n">split_format_file</span><span class="p">(</span><span class="n">file</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">weapon</span><span class="p">,</span> <span class="n">date</span><span class="p">)</span>
+
+            <span class="c1"># file[2,3] --&gt; df_info</span>
+            <span class="n">info</span> <span class="o">=</span> <span class="n">format_info</span><span class="p">(</span><span class="n">file</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">+</span><span class="n">file</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">info</span><span class="p">,</span> <span class="n">date</span><span class="p">)</span>
+            
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+        
+<span class="n">df_kills</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">StringIO</span><span class="p">(</span><span class="n">kills</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s2">","</span><span class="p">)</span>
+<span class="n">df_weapons</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">StringIO</span><span class="p">(</span><span class="n">weapon</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s2">","</span><span class="p">)</span>
+<span class="n">df_info</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">StringIO</span><span class="p">(</span><span class="n">info</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s2">","</span><span class="p">)</span>
+
+<span class="n">df_kills</span><span class="p">[</span><span class="s2">"Date"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_kills</span><span class="o">.</span><span class="n">Date</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">'%Y.%m.</span><span class="si">%d</span><span class="s1">-%H.%M.%S'</span><span class="p">)</span><span class="c1">#df_kills["Date"].dt.strftime("%Y.%d.%m-%H.%M.%S")</span>
+<span class="n">df_weapons</span><span class="p">[</span><span class="s2">"Date"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_weapons</span><span class="o">.</span><span class="n">Date</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">'%Y.%m.</span><span class="si">%d</span><span class="s1">-%H.%M.%S'</span><span class="p">)</span><span class="c1">#df_weapons["Date"].dt.strftime("%Y.%d.%m-%H.%M.%S")</span>
+<span class="n">df_info</span><span class="p">[</span><span class="s2">"Date"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_info</span><span class="o">.</span><span class="n">Date</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">'%Y.%m.</span><span class="si">%d</span><span class="s1">-%H.%M.%S'</span><span class="p">)</span><span class="c1">#df_info["Date"].dt.strftime("%Y.%d.%m-%H.%M.%S")</span>
+
+<span class="k">with</span> <span class="n">pd</span><span class="o">.</span><span class="n">option_context</span><span class="p">(</span><span class="s1">'display.max_rows'</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'display.max_columns'</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">df_kills</span><span class="p">)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">df_weapons</span><span class="p">)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">df_info</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>list index out of range
+HTTP Error 404: Not Found
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>Kill #</th>
+      <th>Timestamp</th>
+      <th>Bot</th>
+      <th>Weapon</th>
+      <th>TTK</th>
+      <th>Shots</th>
+      <th>Hits</th>
+      <th>Accuracy</th>
+      <th>Damage Done</th>
+      <th>Damage Possible</th>
+      <th>Efficiency</th>
+      <th>Cheated</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2020-10-25 14:21:19</td>
+      <td>1</td>
+      <td>14:19:43.846</td>
+      <td>target</td>
+      <td>pistol</td>
+      <td>0s</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>100.0</td>
+      <td>400</td>
+      <td>0.250</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2020-10-25 14:21:19</td>
+      <td>2</td>
+      <td>14:19:45.497</td>
+      <td>target</td>
+      <td>pistol</td>
+      <td>0.307s</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0.5</td>
+      <td>100.0</td>
+      <td>800</td>
+      <td>0.125</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2020-10-25 14:21:19</td>
+      <td>3</td>
+      <td>14:19:46.148</td>
+      <td>target</td>
+      <td>pistol</td>
+      <td>0s</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>100.0</td>
+      <td>400</td>
+      <td>0.250</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2020-10-25 14:21:19</td>
+      <td>4</td>
+      <td>14:19:46.784</td>
+      <td>target</td>
+      <td>pistol</td>
+      <td>0s</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>100.0</td>
+      <td>400</td>
+      <td>0.250</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2020-10-25 14:21:19</td>
+      <td>5</td>
+      <td>14:19:47.384</td>
+      <td>target</td>
+      <td>pistol</td>
+      <td>0s</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>100.0</td>
+      <td>400</td>
+      <td>0.250</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>16370</th>
+      <td>2020-11-15 16:47:49</td>
+      <td>87</td>
+      <td>16:47:47.289</td>
+      <td>Shinji small Bot</td>
+      <td>pistol</td>
+      <td>0s</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>2000.0</td>
+      <td>2000</td>
+      <td>1.000</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>16371</th>
+      <td>2020-11-15 16:47:49</td>
+      <td>88</td>
+      <td>16:47:47.834</td>
+      <td>Shinji Bot</td>
+      <td>pistol</td>
+      <td>0s</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>2000.0</td>
+      <td>2000</td>
+      <td>1.000</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>16372</th>
+      <td>2020-11-15 16:47:49</td>
+      <td>89</td>
+      <td>16:47:48.056</td>
+      <td>Shinji Bot</td>
+      <td>pistol</td>
+      <td>0s</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>2000.0</td>
+      <td>2000</td>
+      <td>1.000</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>16373</th>
+      <td>2020-11-15 16:47:49</td>
+      <td>90</td>
+      <td>16:47:48.635</td>
+      <td>Shinji Bot</td>
+      <td>pistol</td>
+      <td>0s</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>2000.0</td>
+      <td>2000</td>
+      <td>1.000</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>16374</th>
+      <td>2020-11-15 16:47:49</td>
+      <td>91</td>
+      <td>16:47:49.203</td>
+      <td>Shinji Bot</td>
+      <td>pistol</td>
+      <td>0s</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>2000.0</td>
+      <td>2000</td>
+      <td>1.000</td>
+      <td>False</td>
+    </tr>
+  </tbody>
+</table>
+<p>16375 rows × 13 columns</p>
+</div>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>Weapon</th>
+      <th>Shots</th>
+      <th>Hits</th>
+      <th>Damage Done</th>
+      <th>Damage Possible</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2020-10-25 14:21:19</td>
+      <td>pistol</td>
+      <td>89</td>
+      <td>81</td>
+      <td>8100.0</td>
+      <td>35600.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2020-10-25 14:22:25</td>
+      <td>pistol</td>
+      <td>88</td>
+      <td>84</td>
+      <td>8400.0</td>
+      <td>35200.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2020-10-25 14:23:38</td>
+      <td>pistol</td>
+      <td>89</td>
+      <td>83</td>
+      <td>8300.0</td>
+      <td>35600.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2020-10-25 14:24:44</td>
+      <td>pistol</td>
+      <td>87</td>
+      <td>81</td>
+      <td>8100.0</td>
+      <td>34800.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2020-10-25 14:26:01</td>
+      <td>pistol</td>
+      <td>82</td>
+      <td>76</td>
+      <td>7600.0</td>
+      <td>32800.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>464</th>
+      <td>2020-10-26 12:05:25</td>
+      <td>LG</td>
+      <td>1284</td>
+      <td>527</td>
+      <td>3162.0</td>
+      <td>7704.0</td>
+    </tr>
+    <tr>
+      <th>465</th>
+      <td>2020-10-28 19:58:00</td>
+      <td>LG</td>
+      <td>1283</td>
+      <td>468</td>
+      <td>2808.0</td>
+      <td>7698.0</td>
+    </tr>
+    <tr>
+      <th>466</th>
+      <td>2020-10-28 19:59:06</td>
+      <td>LG</td>
+      <td>1289</td>
+      <td>536</td>
+      <td>3216.0</td>
+      <td>7734.0</td>
+    </tr>
+    <tr>
+      <th>467</th>
+      <td>2020-10-28 20:00:09</td>
+      <td>LG</td>
+      <td>1288</td>
+      <td>579</td>
+      <td>3474.0</td>
+      <td>7728.0</td>
+    </tr>
+    <tr>
+      <th>468</th>
+      <td>2020-10-28 20:01:14</td>
+      <td>LG</td>
+      <td>1285</td>
+      <td>559</td>
+      <td>3354.0</td>
+      <td>7710.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>469 rows × 6 columns</p>
+</div>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>Kills</th>
+      <th>Deaths</th>
+      <th>Fight Time</th>
+      <th>Avg TTK</th>
+      <th>Damage Done</th>
+      <th>Damage Taken</th>
+      <th>Midairs</th>
+      <th>Midaired</th>
+      <th>Directs</th>
+      <th>Directed</th>
+      <th>Distance Traveled</th>
+      <th>Score</th>
+      <th>Scenario</th>
+      <th>Hash</th>
+      <th>Game Version</th>
+      <th>Challenge Start</th>
+      <th>Input Lag</th>
+      <th>Max FPS (config)</th>
+      <th>Sens Scale</th>
+      <th>Horiz Sens</th>
+      <th>Vert Sens</th>
+      <th>FOV</th>
+      <th>Hide Gun</th>
+      <th>Crosshair</th>
+      <th>Crosshair Scale</th>
+      <th>Crosshair Color</th>
+      <th>Resolution</th>
+      <th>Avg FPS</th>
+      <th>Resolution Scale</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2020-10-25 14:21:19</td>
+      <td>81</td>
+      <td>0</td>
+      <td>2.321</td>
+      <td>0.741</td>
+      <td>8100.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>73.719101</td>
+      <td>1wall 1target</td>
+      <td>b49d715d44114c48760acebae4e1f381</td>
+      <td>2.0.2.0</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>300.0</td>
+      <td>Quake/Source</td>
+      <td>1.5</td>
+      <td>1.5</td>
+      <td>100.0</td>
+      <td>False</td>
+      <td>plus.png</td>
+      <td>1.0</td>
+      <td>FFFF00</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2020-10-25 14:22:25</td>
+      <td>84</td>
+      <td>0</td>
+      <td>1.907</td>
+      <td>0.714</td>
+      <td>8400.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>80.181816</td>
+      <td>1wall 1target</td>
+      <td>b49d715d44114c48760acebae4e1f381</td>
+      <td>2.0.2.0</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>300.0</td>
+      <td>Quake/Source</td>
+      <td>1.5</td>
+      <td>1.5</td>
+      <td>100.0</td>
+      <td>False</td>
+      <td>plus.png</td>
+      <td>1.0</td>
+      <td>FFFF00</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2020-10-25 14:23:38</td>
+      <td>83</td>
+      <td>0</td>
+      <td>2.707</td>
+      <td>0.723</td>
+      <td>8300.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>77.404495</td>
+      <td>1wall 1target</td>
+      <td>b49d715d44114c48760acebae4e1f381</td>
+      <td>2.0.2.0</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>300.0</td>
+      <td>Quake/Source</td>
+      <td>1.5</td>
+      <td>1.5</td>
+      <td>100.0</td>
+      <td>False</td>
+      <td>plus.png</td>
+      <td>1.0</td>
+      <td>FFFF00</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2020-10-25 14:24:44</td>
+      <td>81</td>
+      <td>0</td>
+      <td>1.970</td>
+      <td>0.741</td>
+      <td>8100.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>75.413795</td>
+      <td>1wall 1target</td>
+      <td>b49d715d44114c48760acebae4e1f381</td>
+      <td>2.0.2.0</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>300.0</td>
+      <td>Quake/Source</td>
+      <td>1.5</td>
+      <td>1.5</td>
+      <td>100.0</td>
+      <td>False</td>
+      <td>plus.png</td>
+      <td>1.0</td>
+      <td>FFFF00</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2020-10-25 14:26:01</td>
+      <td>76</td>
+      <td>0</td>
+      <td>2.316</td>
+      <td>0.789</td>
+      <td>7600.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>70.439026</td>
+      <td>1wall 1target</td>
+      <td>b49d715d44114c48760acebae4e1f381</td>
+      <td>2.0.2.0</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>300.0</td>
+      <td>Quake/Source</td>
+      <td>1.2</td>
+      <td>1.2</td>
+      <td>100.0</td>
+      <td>False</td>
+      <td>plus.png</td>
+      <td>1.0</td>
+      <td>FFFF00</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>404</th>
+      <td>2020-10-26 12:05:25</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>3162.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>9486.000000</td>
+      <td>Vertical Long Strafes</td>
+      <td>10dda1a0add87cec31674896c8ae81b4</td>
+      <td>2.0.2.0</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>300.0</td>
+      <td>Quake/Source</td>
+      <td>1.2</td>
+      <td>1.2</td>
+      <td>100.0</td>
+      <td>False</td>
+      <td>plus.png</td>
+      <td>1.0</td>
+      <td>FFFF00</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>405</th>
+      <td>2020-10-28 19:58:00</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>2808.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>8424.000000</td>
+      <td>Vertical Long Strafes</td>
+      <td>10dda1a0add87cec31674896c8ae81b4</td>
+      <td>2.0.2.0</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>300.0</td>
+      <td>Overwatch</td>
+      <td>4.0</td>
+      <td>4.0</td>
+      <td>100.0</td>
+      <td>False</td>
+      <td>plus.png</td>
+      <td>1.0</td>
+      <td>FFFF00</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>406</th>
+      <td>2020-10-28 19:59:06</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>3216.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>9648.000000</td>
+      <td>Vertical Long Strafes</td>
+      <td>10dda1a0add87cec31674896c8ae81b4</td>
+      <td>2.0.2.0</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>300.0</td>
+      <td>Overwatch</td>
+      <td>4.0</td>
+      <td>4.0</td>
+      <td>100.0</td>
+      <td>False</td>
+      <td>plus.png</td>
+      <td>1.0</td>
+      <td>FFFF00</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>407</th>
+      <td>2020-10-28 20:00:09</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>3474.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>10422.000000</td>
+      <td>Vertical Long Strafes</td>
+      <td>10dda1a0add87cec31674896c8ae81b4</td>
+      <td>2.0.2.0</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>300.0</td>
+      <td>Overwatch</td>
+      <td>4.0</td>
+      <td>4.0</td>
+      <td>100.0</td>
+      <td>False</td>
+      <td>plus.png</td>
+      <td>1.0</td>
+      <td>FFFF00</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>408</th>
+      <td>2020-10-28 20:01:14</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>0.000</td>
+      <td>3354.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>10062.000000</td>
+      <td>Vertical Long Strafes</td>
+      <td>10dda1a0add87cec31674896c8ae81b4</td>
+      <td>2.0.2.0</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>300.0</td>
+      <td>Overwatch</td>
+      <td>4.0</td>
+      <td>4.0</td>
+      <td>100.0</td>
+      <td>False</td>
+      <td>plus.png</td>
+      <td>1.0</td>
+      <td>FFFF00</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>409 rows × 30 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Visualizing-the-Data">
+<a class="anchor" href="#Visualizing-the-Data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Visualizing the Data<a class="anchor-link" href="#Visualizing-the-Data"> </a>
+</h1>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_info</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_info</span><span class="p">[</span><span class="s1">'Scenario'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'Tile Frenzy'</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">"Date"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">"Kills"</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">'scatter'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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%0A">
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="JPrier/josh-blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/josh-blog/kovaaks/understanding%20the%20data/data%20science/2020/12/19/KovaaksData.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/josh-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/josh-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/josh-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>My Blog for Notes, Projects, and Rambles</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fastai" title="fastai"><svg class="svg-icon grey"><use xlink:href="/josh-blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/fastdotai" title="fastdotai"><svg class="svg-icon grey"><use xlink:href="/josh-blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
