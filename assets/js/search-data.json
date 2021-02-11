@@ -3,7 +3,7 @@
     
         "post0": {
             "title": "Test",
-            "content": "import plotly.express as px import plotly.io as pio from IPython.display import HTML . pio.templates.default = &quot;seaborn&quot; gapminder = px.data.gapminder() fig = px.violin( gapminder, x=&quot;continent&quot;, y=&quot;lifeExp&quot;, color=&quot;continent&quot;, labels={&quot;lifeExp&quot;: &quot;life expectancy at birth&quot;}, ) .",
+            "content": "import plotly.express as px import plotly.io as pio from IPython.display import HTML . pio.templates.default = &quot;seaborn&quot; gapminder = px.data.gapminder() fig = px.violin( gapminder, x=&quot;continent&quot;, y=&quot;lifeExp&quot;, color=&quot;continent&quot;, labels={&quot;lifeExp&quot;: &quot;life expectancy at birth&quot;}, ) . . .",
             "url": "https://jprier.github.io/josh-blog/test/2021/02/10/test.html",
             "relUrl": "/test/2021/02/10/test.html",
             "date": " • Feb 10, 2021"
