@@ -1,0 +1,11 @@
+project:
+  type: website
+
+website:
+  title: "Josh's Blog"
+  pages:
+    - about.qmd
+    - posts/
+  navbar:
+    right:
+      - about.qmd
