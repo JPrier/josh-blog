@@ -1,11 +1,16 @@
 project:
   type: website
+  output-dir: _site
 
 website:
-  title: "Josh's Blog"
-  pages:
-    - about.qmd
-    - posts/
+  title: "Josh’s Blog"
   navbar:
+    left:
+      - text: "Home"
+        file: posts/index.qmd
     right:
-      - about.qmd
+      - text: "About"
+        file: posts/about.qmd
+      - text: "Blog"
+        file: posts/posts.qmd
+
