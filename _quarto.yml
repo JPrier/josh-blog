@@ -4,13 +4,25 @@ project:
 
 website:
   title: "Josh’s Blog"
+  favicon: images/favicon.ico
   navbar:
     left:
       - text: "Home"
-        file: posts/index.qmd
+        href: pages/index.qmd
     right:
       - text: "About"
-        file: posts/about.qmd
+        href: pages/about.qmd
       - text: "Blog"
-        file: posts/posts.qmd
+        href: posts/posts.qmd
+
+format:
+  html:
+    theme:
+      dark: darkly
+      light: cosmo
+    respect-user-color-scheme: true
+    toc: true                     # show a TOC sidebar on wide screens
+    toc-depth: 2
+    code-fold: true               # allow hiding/showing code blocks
+    code-tools: true
 

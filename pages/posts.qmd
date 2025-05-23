@@ -1,6 +1,0 @@
----
-title: "Blog"
-listing:
-  contents: .
-  sort: date desc
----
