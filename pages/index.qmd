@@ -1,0 +1,22 @@
+---
+title: "Home"
+format:
+  html:
+    toc: false
+    code-fold: false
+---
+
+# Welcome to Josh’s Blog
+
+Hello and thanks for visiting! This is my personal space where I share:
+
+- **Software development** tips and deep dives (embedded systems, cloud architectures, firmware)
+- **DIY projects** and hardware builds (mechanical keyboards, electronics)
+- **Career insights** from my journey in tech
+
+Feel free to explore:
+
+- [About Me](about.html) – Learn more about who I am and what I do.
+- [Blog Posts](posts.html) – Read my latest articles and tutorials.
+
+Enjoy your stay, and happy reading!
