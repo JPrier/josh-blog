@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://JPrier.github.io/josh-blog/posts/posts.html</loc>
-    <lastmod>2025-05-23T21:26:27.452Z</lastmod>
-  </url>
-  <url>
-    <loc>https://JPrier.github.io/josh-blog/index.html</loc>
-    <lastmod>2025-05-23T21:25:40.900Z</lastmod>
+    <loc>https://JPrier.github.io/josh-blog/pages/about.html</loc>
+    <lastmod>2025-05-23T21:38:55.751Z</lastmod>
   </url>
   <url>
     <loc>https://JPrier.github.io/josh-blog/archive/MinecraftBlocks.html</loc>
-    <lastmod>2025-05-23T21:25:41.000Z</lastmod>
+    <lastmod>2025-05-23T21:38:55.746Z</lastmod>
   </url>
   <url>
     <loc>https://JPrier.github.io/josh-blog/archive/archive.html</loc>
-    <lastmod>2025-05-23T21:29:47.916Z</lastmod>
-  </url>
-  <url>
-    <loc>https://JPrier.github.io/josh-blog/archive/2020-12-12-NNFS-Notes.html</loc>
-    <lastmod>2025-05-23T21:25:32.954Z</lastmod>
+    <lastmod>2025-05-23T21:38:55.750Z</lastmod>
   </url>
   <url>
     <loc>https://JPrier.github.io/josh-blog/archive/KovaaksData.html</loc>
-    <lastmod>2025-05-23T21:25:40.901Z</lastmod>
+    <lastmod>2025-05-23T21:38:55.671Z</lastmod>
+  </url>
+  <url>
+    <loc>https://JPrier.github.io/josh-blog/index.html</loc>
+    <lastmod>2025-05-23T21:38:55.751Z</lastmod>
+  </url>
+  <url>
+    <loc>https://JPrier.github.io/josh-blog/archive/2020-12-12-NNFS-Notes.html</loc>
+    <lastmod>2025-05-23T21:38:55.671Z</lastmod>
   </url>
   <url>
     <loc>https://JPrier.github.io/josh-blog/archive/plotlyWithFastPages.html</loc>
-    <lastmod>2025-05-23T21:25:41.001Z</lastmod>
+    <lastmod>2025-05-23T21:38:55.751Z</lastmod>
   </url>
   <url>
-    <loc>https://JPrier.github.io/josh-blog/pages/about.html</loc>
-    <lastmod>2025-05-23T21:25:40.900Z</lastmod>
+    <loc>https://JPrier.github.io/josh-blog/posts/posts.html</loc>
+    <lastmod>2025-05-23T21:38:55.752Z</lastmod>
   </url>
 </urlset>

@@ -1,15 +1,15 @@
 [
   {
-    "listing": "/posts/posts.html",
-    "items": []
-  },
-  {
     "listing": "/archive/archive.html",
     "items": [
-      "/archive/2020-12-12-NNFS-Notes.html",
       "/archive/KovaaksData.html",
-      "/archive/MinecraftBlocks.html",
-      "/archive/plotlyWithFastPages.html"
+      "/archive/2020-12-12-NNFS-Notes.html",
+      "/archive/plotlyWithFastPages.html",
+      "/archive/MinecraftBlocks.html"
     ]
+  },
+  {
+    "listing": "/posts/posts.html",
+    "items": []
   }
 ]
