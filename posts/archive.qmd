@@ -1,6 +1,0 @@
----
-title: "Archived Posts"
-listing:
-  contents: ./archive
-  sort: date desc
----

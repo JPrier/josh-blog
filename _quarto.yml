@@ -8,12 +8,12 @@ website:
   navbar:
     left:
       - text: "Home"
-        href: index.qmd
+        href: index.html
     right:
-      - text: "About"
-        href: pages/about.qmd
-      - text: "Blog"
-        href: posts/posts.qmd
+      - text: "Archive Vault"
+        href: archive/archive.html
+      - text: "Posts"
+        href: posts/posts.html
 
 format:
   html:
