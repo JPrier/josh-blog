@@ -1,1 +1,1 @@
-Sitemap: https://jprier.github.io/josh-blog/sitemap.xml
+Sitemap: https://JPrier.github.io/josh-blog/sitemap.xml
