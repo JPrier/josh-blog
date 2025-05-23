@@ -1,35 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://JPrier.github.io/josh-blog/inProgressPosts/cleanCode.html</loc>
+    <lastmod>2025-05-23T23:28:26.679Z</lastmod>
+  </url>
+  <url>
     <loc>https://JPrier.github.io/josh-blog/pages/about.html</loc>
-    <lastmod>2025-05-23T21:38:55.751Z</lastmod>
+    <lastmod>2025-05-23T23:28:26.679Z</lastmod>
   </url>
   <url>
     <loc>https://JPrier.github.io/josh-blog/archive/MinecraftBlocks.html</loc>
-    <lastmod>2025-05-23T21:38:55.746Z</lastmod>
+    <lastmod>2025-05-23T23:28:26.674Z</lastmod>
   </url>
   <url>
     <loc>https://JPrier.github.io/josh-blog/archive/archive.html</loc>
-    <lastmod>2025-05-23T21:38:55.750Z</lastmod>
+    <lastmod>2025-05-23T23:28:26.678Z</lastmod>
   </url>
   <url>
     <loc>https://JPrier.github.io/josh-blog/archive/KovaaksData.html</loc>
-    <lastmod>2025-05-23T21:38:55.671Z</lastmod>
+    <lastmod>2025-05-23T23:28:26.600Z</lastmod>
   </url>
   <url>
     <loc>https://JPrier.github.io/josh-blog/index.html</loc>
-    <lastmod>2025-05-23T21:38:55.751Z</lastmod>
+    <lastmod>2025-05-23T23:28:26.679Z</lastmod>
   </url>
   <url>
     <loc>https://JPrier.github.io/josh-blog/archive/2020-12-12-NNFS-Notes.html</loc>
-    <lastmod>2025-05-23T21:38:55.671Z</lastmod>
+    <lastmod>2025-05-23T23:28:26.599Z</lastmod>
   </url>
   <url>
     <loc>https://JPrier.github.io/josh-blog/archive/plotlyWithFastPages.html</loc>
-    <lastmod>2025-05-23T21:38:55.751Z</lastmod>
+    <lastmod>2025-05-23T23:28:26.678Z</lastmod>
   </url>
   <url>
     <loc>https://JPrier.github.io/josh-blog/posts/posts.html</loc>
-    <lastmod>2025-05-23T21:38:55.752Z</lastmod>
+    <lastmod>2025-05-23T23:28:26.679Z</lastmod>
+  </url>
+  <url>
+    <loc>https://JPrier.github.io/josh-blog/inProgressPosts/inProgressPosts.html</loc>
+    <lastmod>2025-05-23T23:28:26.679Z</lastmod>
   </url>
 </urlset>

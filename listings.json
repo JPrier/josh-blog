@@ -11,5 +11,11 @@
   {
     "listing": "/posts/posts.html",
     "items": []
+  },
+  {
+    "listing": "/inProgressPosts/inProgressPosts.html",
+    "items": [
+      "/inProgressPosts/cleanCode.html"
+    ]
   }
 ]

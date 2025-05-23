@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="A guide for making context-driven decisions about code quality">
 
-<title>Archive Vault – Josh’s Blog</title>
+<title>Clean Code – Josh’s Blog</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -66,8 +67,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
 <link href="../images/favicon.ico" rel="icon">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -107,65 +106,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-author','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -362,7 +303,7 @@ window.Quarto = {
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="../archive/archive.html" aria-current="page"> 
+    <a class="nav-link" href="../archive/archive.html"> 
 <span class="menu-text">Archive Vault</span></a>
   </li>  
   <li class="nav-item">
@@ -390,9 +331,14 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Archive Vault</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title">Clean Code</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 </div>
 
+<div>
+  <div class="description">
+    A guide for making context-driven decisions about code quality
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -407,93 +353,97 @@ window.Quarto = {
 </header>
 
 
+<section id="what-is-the-goal-of-clean-code" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-the-goal-of-clean-code">What is the Goal of Clean Code?</h3>
+<p>Before we even start to talk about techniques its important to discuss why clean code techniques are so important.</p>
+<p>The words to describe why are Consistency, Maintainability, and Readability. When writing code you should strive for these as much as possible</p>
+<blockquote class="blockquote">
+<p>KEY WORD: “Possible” - Clean code should be a goal only with-in the constraints of your projects requirements. If you have an extremely tight timeline, require extremely low runtimes, or any other common requirement then do not scarifice those requirements for clean code.</p>
+</blockquote>
+<section id="consistency" class="level4">
+<h4 class="anchored" data-anchor-id="consistency">Consistency</h4>
+<p>Consistency is important, especially as the number of engineers who work on the project increases. Inconsistent styling, organizing, and formatting can increase the time it takes to find specific code in a project.</p>
+<p>For example, I am debugging a problem with a service that I have never touched before the bug is an issue with some business logic that is causing the output to have a mismatch from the expected. When looking through the service code to understand what the current business logic is it becomes difficult to find if the file names, directory names, and location of logic is in completely different locations not only compared to other services but within this service itself too. If instead it was placed consistently I could quickly go to the specific level of logic im concerned with because I know where to expect this logic to live</p>
+</section>
+<section id="maintainability" class="level4">
+<h4 class="anchored" data-anchor-id="maintainability">Maintainability</h4>
+<p>Maintainability is important for future work, whether it is yourself or someone else. If doing a minor feature change requires a lot of code changes then your service is not maintainable. You want it to be easy to add future un-anticipated features, doing so makes the team more agile. Agility allows development to complete faster saving that sacred developer time.</p>
+</section>
+<section id="readability" class="level4">
+<h4 class="anchored" data-anchor-id="readability">Readability</h4>
+<p>Readability, similar to consistency, is about the ability to understand the code. Not only is finding the code important being able to follow the intention of the logic is extremely important. Authors like Kent Beck, Martin Fowler, and Robert Martin will say your code should read like a story, and to an extent they are right (Clean Code bad amirite???). Code that makes the logic easy to follow makes understanding faster, and faster understanding of code means faster onboarding for new team members or faster refresh for exisiting members (remember this includes YOU too).</p>
+</section>
+</section>
+<section id="structure" class="level3">
+<h3 class="anchored" data-anchor-id="structure">Structure</h3>
+<p>Structuring your project is a big piece of Consistency and Maintainability, and by this I mean how you structure your directories and files.</p>
+<pre><code>Project/
+|- processor/
+  |- fileProcessor
+|- helpers/
+  |- fileHelper
+|- util/
+  |- fileformatter</code></pre>
+<pre><code>Project/
+|- service/
+  |- fileRequestHandler
+|- logic/
+  |- fileUploadComponent
+  |- fileDownloadComponent
+  |- mapper/
+    |- fileMapper
+|- dependency/
+  |- fileServiceAccessor</code></pre>
+</section>
+<section id="conditions" class="level3">
+<h3 class="anchored" data-anchor-id="conditions">Conditions</h3>
+<p>When possible, simplify your conditions. This can mean a lot of different things. Maybe pushing a complex condition to a succiently named method, or switching the type of condition (switch/case - nested if/else) can help increase the readability of the code.</p>
+<section id="large-conditions" class="level4">
+<h4 class="anchored" data-anchor-id="large-conditions">Large Conditions</h4>
+<p>Complex conditions are the bane of readability and maintainability, remember that the reader of your code has to keep the entire context in their head (or context window if they are AI). When a long condition is checking for the same thing, (like if a user is allowlisted) then the condition can be moved to an amptly named method. Doing so allows the reader to understand the intent of the conditions without needing to read the entire thing.</p>
+<p>For example, lets look at a (semi) complex condition that is attempting to check if a user is allowlisted.</p>
+<pre><code>if (user.x == c1 or user.y == c2 or user.z == c3):
+    ...logic...</code></pre>
+<p>If we put the condition into a separate method we remove the need to read the condition to understand the intent of the higher function.</p>
+<pre><code>if isUserAllowlisted():
+    ...logic...
 
+def isUserAllowlisted():
+    return user.x == c1 or user.y == c2 or user.z == c3</code></pre>
+</section>
+<section id="guard-clauses" class="level4">
+<h4 class="anchored" data-anchor-id="guard-clauses">Guard Clauses</h4>
+<p>This is something I got from Kent Beck’s book “Tidy First”. This trick moves conditions that guard logic to the top of the method, this helps show the conditions required for the method to continue.</p>
+<p>As an example lets use the previously created isUserAllowlisted method.</p>
+<pre><code>def method(user):
+    if isUserAllowlisted(user):
+        ...logic...</code></pre>
+<p>With a single line this seems reasonable, but lets show what happens as the method grows (this is terrible code, just an example of how the structure of conditions gets worse over time)</p>
+<pre><code>def method(user):
+    if isUserAllowlisted(user):
+        state = getUserState(user)
+        if isUserStateValid(state):
+            ...logic...
+        </code></pre>
+<p>This can then easily be replaced with guard clauses. These clauses make it easier to see what requirements are on the user or state in order to continue with the logic</p>
+<pre><code>def method(user):
+    if !isUserAllowlisted(user):
+        return or throw
+    
+    state = getUserState(user)
+
+    if !isUserStateValid(state):
+        return or throw
+    
+    ...logic...</code></pre>
 
 
 <!-- -->
 
+</section>
+</section>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-file-modified-sort="1748042906600" data-listing-reading-time-sort="1" data-listing-word-count-sort="188">
-<div class="thumbnail"><a href="../archive/KovaaksData.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../archive/KovaaksData.html" class="no-external">Understanding The Data – Kovaaks Aim Trainer</a>
-</h3>
-<div class="delink listing-description"><a href="../archive/KovaaksData.html" class="no-external">
-A Deep Dive into the automatically saved csvs from Kovaaks Aim Trainer
-</a></div>
-</div>
-<div class="metadata">
-<a href="../archive/KovaaksData.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="U3R1ZHlpbmc=" data-listing-file-modified-sort="1748042906599" data-listing-reading-time-sort="3" data-listing-word-count-sort="539">
-<div class="thumbnail"><a href="../archive/2020-12-12-NNFS-Notes.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../archive/2020-12-12-NNFS-Notes.html" class="no-external">Notes From NNFS</a>
-</h3>
-<div class="delink listing-description"><a href="../archive/2020-12-12-NNFS-Notes.html" class="no-external">
-<p>Notes from NNFS</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../archive/2020-12-12-NNFS-Notes.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-listing-file-modified-sort="1748042906678" data-listing-reading-time-sort="1" data-listing-word-count-sort="192">
-<div class="thumbnail"><a href="../archive/plotlyWithFastPages.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../archive/plotlyWithFastPages.html" class="no-external">How to get plotly working with FastPages</a>
-</h3>
-<div class="delink listing-description"><a href="../archive/plotlyWithFastPages.html" class="no-external">
-How to get plotly to work with fastai blogs
-</a></div>
-</div>
-<div class="metadata">
-<a href="../archive/plotlyWithFastPages.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-listing-file-modified-sort="1748042906674" data-listing-reading-time-sort="2" data-listing-word-count-sort="367">
-<div class="thumbnail"><a href="../archive/MinecraftBlocks.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../archive/MinecraftBlocks.html" class="no-external">Understanding The Data – Minecraft Mining</a>
-</h3>
-<div class="delink listing-description"><a href="../archive/MinecraftBlocks.html" class="no-external">
-A Deep Dive into the Distribution of Blocks in Minecraft
-</a></div>
-</div>
-<div class="metadata">
-<a href="../archive/MinecraftBlocks.html" class="no-external">
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -957,12 +907,119 @@ A Deep Dive into the Distribution of Blocks in Minecraft
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Archive Vault"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">listing:</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">  contents: .</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">  sort: date desc</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> Clean Code</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> A guide for making context-driven decisions about code quality</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">### What is the Goal of Clean Code?</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>Before we even start to talk about techniques its important to discuss why clean code techniques are so important. </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>The words to describe why are Consistency, Maintainability, and Readability. When writing code you should strive for these as much as possible</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; KEY WORD: "Possible" - Clean code should be a goal only with-in the constraints of your projects requirements. If you have an extremely tight timeline, require extremely low runtimes, or any other common requirement then do not scarifice those requirements for clean code.</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Consistency</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>Consistency is important, especially as the number of engineers who work on the project increases. Inconsistent styling, organizing, and formatting can increase the time it takes to find specific code in a project. </span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>For example, I am debugging a problem with a service that I have never touched before the bug is an issue with some business logic that is causing the output to have a mismatch from the expected. When looking through the service code to understand what the current business logic is it becomes difficult to find if the file names, directory names, and location of logic is in completely different locations not only compared to other services but within this service itself too. If instead it was placed consistently I could quickly go to the specific level of logic im concerned with because I know where to expect this logic to live</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Maintainability</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>Maintainability is important for future work, whether it is yourself or someone else. If doing a minor feature change requires a lot of code changes then your service is not maintainable. You want it to be easy to add future un-anticipated features, doing so makes the team more agile. Agility allows development to complete faster saving that sacred developer time.</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Readability</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>Readability, similar to consistency, is about the ability to understand the code. Not only is finding the code important being able to follow the intention of the logic is extremely important. Authors like Kent Beck, Martin Fowler, and Robert Martin will say your code should read like a story, and to an extent they are right (Clean Code bad amirite???). Code that makes the logic easy to follow makes understanding faster, and faster understanding of code means faster onboarding for new team members or faster refresh for exisiting members (remember this includes YOU too).</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="fu">### Structure</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>Structuring your project is a big piece of Consistency and Maintainability, and by this I mean how you structure your directories and files. </span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="in">Project/</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="in">|- processor/</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="in">  |- fileProcessor</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a><span class="in">|- helpers/</span></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a><span class="in">  |- fileHelper</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a><span class="in">|- util/</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a><span class="in">  |- fileformatter</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a><span class="in">Project/</span></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a><span class="in">|- service/</span></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a><span class="in">  |- fileRequestHandler</span></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a><span class="in">|- logic/</span></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a><span class="in">  |- fileUploadComponent</span></span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a><span class="in">  |- fileDownloadComponent</span></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a><span class="in">  |- mapper/</span></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a><span class="in">    |- fileMapper</span></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a><span class="in">|- dependency/</span></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a><span class="in">  |- fileServiceAccessor</span></span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a><span class="fu">### Conditions</span></span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>When possible, simplify your conditions. This can mean a lot of different things. Maybe pushing a complex condition to a succiently named method, or switching the type of condition (switch/case - nested if/else) can help increase the readability of the code.</span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Large Conditions</span></span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>Complex conditions are the bane of readability and maintainability, remember that the reader of your code has to keep the entire context in their head (or context window if they are AI). When a long condition is checking for the same thing, (like if a user is allowlisted) then the condition can be moved to an amptly named method. Doing so allows the reader to understand the intent of the conditions without needing to read the entire thing.</span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a>For example, lets look at a (semi) complex condition that is attempting to check if a user is allowlisted.</span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a><span class="in">if (user.x == c1 or user.y == c2 or user.z == c3):</span></span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a><span class="in">    ...logic...</span></span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a>If we put the condition into a separate method we remove the need to read the condition to understand the intent of the higher function.</span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a><span class="in">if isUserAllowlisted():</span></span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a><span class="in">    ...logic...</span></span>
+<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a><span class="in">def isUserAllowlisted():</span></span>
+<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a><span class="in">    return user.x == c1 or user.y == c2 or user.z == c3</span></span>
+<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Guard Clauses</span></span>
+<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a>This is something I got from Kent Beck's book "Tidy First". This trick moves conditions that guard logic to the top of the method, this helps show the conditions required for the method to continue.</span>
+<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a>As an example lets use the previously created isUserAllowlisted method.</span>
+<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a><span class="in">def method(user):</span></span>
+<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a><span class="in">    if isUserAllowlisted(user):</span></span>
+<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a><span class="in">        ...logic...</span></span>
+<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a>With a single line this seems reasonable, but lets show what happens as the method grows (this is terrible code, just an example of how the structure of conditions gets worse over time)</span>
+<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a><span class="in">def method(user):</span></span>
+<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a><span class="in">    if isUserAllowlisted(user):</span></span>
+<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a><span class="in">        state = getUserState(user)</span></span>
+<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a><span class="in">        if isUserStateValid(state):</span></span>
+<span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a><span class="in">            ...logic...</span></span>
+<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a><span class="in">        </span></span>
+<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a>This can then easily be replaced with guard clauses. These clauses make it easier to see what requirements are on the user or state in order to continue with the logic</span>
+<span id="cb8-101"><a href="#cb8-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-102"><a href="#cb8-102" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-103"><a href="#cb8-103" aria-hidden="true" tabindex="-1"></a><span class="in">def method(user):</span></span>
+<span id="cb8-104"><a href="#cb8-104" aria-hidden="true" tabindex="-1"></a><span class="in">    if !isUserAllowlisted(user):</span></span>
+<span id="cb8-105"><a href="#cb8-105" aria-hidden="true" tabindex="-1"></a><span class="in">        return or throw</span></span>
+<span id="cb8-106"><a href="#cb8-106" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
+<span id="cb8-107"><a href="#cb8-107" aria-hidden="true" tabindex="-1"></a><span class="in">    state = getUserState(user)</span></span>
+<span id="cb8-108"><a href="#cb8-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-109"><a href="#cb8-109" aria-hidden="true" tabindex="-1"></a><span class="in">    if !isUserStateValid(state):</span></span>
+<span id="cb8-110"><a href="#cb8-110" aria-hidden="true" tabindex="-1"></a><span class="in">        return or throw</span></span>
+<span id="cb8-111"><a href="#cb8-111" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
+<span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a><span class="in">    ...logic...</span></span>
+<span id="cb8-113"><a href="#cb8-113" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
